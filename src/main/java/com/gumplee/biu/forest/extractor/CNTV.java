@@ -26,6 +26,7 @@ public class CNTV extends BaseExtractor
 	@Resource(name="streamCommon")
 	StreamCommon common;
 	
+	
 	@Override
 	public void process(StreamContext context)
 	{
@@ -33,11 +34,7 @@ public class CNTV extends BaseExtractor
 		execute(srVo,context);
 	}
 
-	/**
-	 * 
-	 * @date: 2015年12月24日 
-	 * @author: liyuanjun
-	 */
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(StreamReqeustVO srVo,StreamContext context)
@@ -75,11 +72,7 @@ public class CNTV extends BaseExtractor
 		downloadVideoById(id, srVo,context);
 	}
 	
-	/**
-	 * 
-	 * @date: 2015年12月24日 
-	 * @author: liyuanjun
-	 */
+
 	@SuppressWarnings("unchecked")
 	public void downloadVideoById(String id,StreamReqeustVO srVo,StreamContext context)
 	{
@@ -139,11 +132,7 @@ public class CNTV extends BaseExtractor
 		}
 	}
 	
-	/**
-	 * 
-	 * @date: 2015年12月24日 
-	 * @author: liyuanjun
-	 */
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
