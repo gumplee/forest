@@ -129,6 +129,7 @@ public class Le extends BaseExtractor{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private void letvCloudDownload(StreamReqeustVO srVo, StreamContext context)
 	{
 		String url = srVo.getUrl();
@@ -141,7 +142,9 @@ public class Le extends BaseExtractor{
 			String title = "LETV-"+vu;
 			downloadLetvCloudByVu( vu, uu,title,srVo,context );
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			logger.info("{} parse url error",srVo.getUrl());
+			context.put(StreamContext.VideoInfo.DOWNLOAD_STATE, 0);
+			return;
 		}
 	}
 	
