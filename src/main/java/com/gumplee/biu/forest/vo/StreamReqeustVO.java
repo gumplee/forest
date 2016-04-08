@@ -11,11 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * 
- * @author liyuanjun
- *
- */
+
 public class StreamReqeustVO
 {
 	private String url;

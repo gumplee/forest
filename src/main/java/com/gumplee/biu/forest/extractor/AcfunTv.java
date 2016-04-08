@@ -86,6 +86,7 @@ public class AcfunTv extends BaseExtractor
 			
 		}
 		else {
+			logger.info("not supported {} ",srVo.getUrl());
 			context.put(StreamContext.VideoInfo.DOWNLOAD_STATE, -1);
 			return;
 		}

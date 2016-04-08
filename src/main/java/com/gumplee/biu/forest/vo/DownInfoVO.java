@@ -3,13 +3,6 @@ package com.gumplee.biu.forest.vo;
 import com.gumplee.biu.forest.common.SimpleProgressBar;
 
 
-
-/**
- * 下载信息类
- * 
- * @author xiaobisong
- *
- */
 public class DownInfoVO {
 	
 	/**

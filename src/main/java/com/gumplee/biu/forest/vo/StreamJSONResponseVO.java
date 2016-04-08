@@ -4,11 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 
 
 
-/**
- * 
- * @author: liyuanjun
- * @date: 2015年12月24日
- */
 public class StreamJSONResponseVO
 {
 	private String title;
