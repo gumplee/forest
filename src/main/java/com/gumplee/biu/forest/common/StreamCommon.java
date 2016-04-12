@@ -707,6 +707,9 @@ public class StreamCommon {
 		}
 		else {//非续传的情况
 			newSrvo = srVo.clone(srVo.getUrl());
+			if (startIndex.equals(0l) && end.equals(0l)) {
+				return newSrvo;
+			}
 			HashMap<String, String> headers = newSrvo.getHeaders();
 			headers.put("Range", "bytes=" + String.valueOf(startIndex)
 					+ "-" + (end.equals(0l) ? "" : String.valueOf(end)));
