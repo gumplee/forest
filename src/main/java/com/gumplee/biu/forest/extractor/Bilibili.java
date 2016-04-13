@@ -17,10 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("bilibili")
@@ -45,8 +43,6 @@ public class Bilibili extends BaseExtractor
 	BaseExtractor sina;
 	@Resource(name="tudou")
 	BaseExtractor tudou;
-	@Resource(name="youku")
-	BaseExtractor youku;
 
 	
 	@Override
@@ -172,7 +168,7 @@ public class Bilibili extends BaseExtractor
 		String ext = common.getFileExtName(urls.get(0), srVo);
 		context.put(StreamContext.VideoInfo.EXT, ext);
 		String title = (String)context.get(StreamContext.VideoInfo.TITLE);
-		getStreamJsonInfo(srVo, context);//封装视频信息json串
+		getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 		
 		if (srVo.isDownload())
 		{
@@ -217,15 +213,4 @@ public class Bilibili extends BaseExtractor
 		}
 		return uu;
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
-	}
-
 }

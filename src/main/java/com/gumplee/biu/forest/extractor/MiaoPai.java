@@ -9,10 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("miaopai")
@@ -66,7 +64,7 @@ public class MiaoPai extends BaseExtractor
 				String ext = common.getFileExtName(url, srVo);
 				context.put(StreamContext.VideoInfo.EXT,ext);
 				
-				getStreamJsonInfo(srVo, context);//封装视频信息json串
+				getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 				
 				if (srVo.isDownload())
 				{
@@ -92,15 +90,5 @@ public class MiaoPai extends BaseExtractor
 			context.put(StreamContext.VideoInfo.DOWNLOAD_STATE, -1);
 			return;
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
 	}
 }

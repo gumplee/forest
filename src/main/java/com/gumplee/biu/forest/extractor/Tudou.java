@@ -26,10 +26,8 @@ import org.xml.sax.InputSource;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("tudou")
@@ -39,9 +37,6 @@ public class Tudou extends BaseExtractor
 	public static final String SITE_INFO = "Tudou.com";
 	@Resource(name="streamCommon")
 	StreamCommon common;
-	
-	@Resource(name="youku")
-	BaseExtractor youku;
 	
 	@Override
 	public void process(StreamContext context)
@@ -249,7 +244,7 @@ public class Tudou extends BaseExtractor
 		context.put(StreamContext.VideoInfo.URLS, urls);
 		context.put(StreamContext.VideoInfo.SIZE, size);
 		context.put(StreamContext.VideoInfo.EXT, ext);		
-		getStreamJsonInfo(srVo, context);//封装视频信息json串
+		getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 		if (srVo.isDownload())
 		{
 			
@@ -286,15 +281,4 @@ public class Tudou extends BaseExtractor
 		String iid = common.match2(srcHtml, "iid\\s*[:=]\\s*(\\S+)");
 		return getVideoByIid(iid,title, srVo,context);
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
-	}
-
 }

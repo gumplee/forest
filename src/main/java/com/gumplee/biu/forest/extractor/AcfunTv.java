@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("acfuntv")
@@ -32,10 +30,8 @@ public class AcfunTv extends BaseExtractor
 	BaseExtractor tudou;
 	@Resource(name="qq")
 	BaseExtractor qq;
-	@Resource(name="letv")
-	BaseExtractor letv;
-	@Resource(name="youku")
-	BaseExtractor youku;
+	@Resource(name="le")
+	BaseExtractor le;
 	
 	@Override
 	public void process(StreamContext context)
@@ -149,7 +145,7 @@ public class AcfunTv extends BaseExtractor
 					String ext = "mp4";
 					context.put(StreamContext.VideoInfo.EXT,ext);
 					
-					getStreamJsonInfo(srVo, context);//封装视频信息json串
+					getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 					
 					if (srVo.isDownload())
 					{
@@ -183,15 +179,4 @@ public class AcfunTv extends BaseExtractor
 			return;
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
-	}
-
 }

@@ -2,7 +2,6 @@ package com.gumplee.biu.forest.extractor;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,10 +14,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("tucao")
@@ -106,7 +103,7 @@ public class Tucao extends BaseExtractor
 			context.put(StreamContext.VideoInfo.SIZE, size);
 			context.put(StreamContext.VideoInfo.EXT, ext);
 			title = common.processTitle(title);
-			getStreamJsonInfo(srVo, context);//封装视频信息json串
+			getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 			
 			if (srVo.isDownload())
 			{
@@ -148,7 +145,7 @@ public class Tucao extends BaseExtractor
 				context.put(StreamContext.VideoInfo.SIZE, size);
 				context.put(StreamContext.VideoInfo.EXT, ext);
 				title = common.processTitle(title);
-				getStreamJsonInfo(srVo, context);//封装视频信息json串
+				getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 				
 				if (srVo.isDownload())
 				{
@@ -169,15 +166,5 @@ public class Tucao extends BaseExtractor
 				return;
 			} 
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
 	}
 }

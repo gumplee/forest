@@ -1,7 +1,6 @@
 package com.gumplee.biu.forest.extractor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.annotation.Resource;
 
@@ -11,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 @Service("cntv")
@@ -110,7 +107,7 @@ public class CNTV extends BaseExtractor
 				}
 				context.put(StreamContext.VideoInfo.SIZE, size);
 				
-				getStreamJsonInfo(srVo, context);
+				getStreamJsonInfo(SITE_INFO,srVo, context);
 				if (srVo.isDownload())
 				{
 					boolean result = common.downloadVideo(urls, title, ext, size, srVo);
@@ -130,19 +127,5 @@ public class CNTV extends BaseExtractor
 			context.put(StreamContext.VideoInfo.DOWNLOAD_STATE, 0);
 			return;
 		}
-	}
-	
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		
-		if(!result.isEmpty())
-			return true; 
-		return false;
 	}
 }

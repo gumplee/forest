@@ -105,9 +105,7 @@ public class StreamCommon {
 			put("yinyuetai", "yinYueTai");
 			put("ku6", "ku6");
 			put("baidu", "baidu");
-			put("letv","letv");
-			put("le","letv");
-			put("youku","youku");
+			put("le","le");
 		}
 	};
 

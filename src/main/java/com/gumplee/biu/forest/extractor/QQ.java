@@ -1,7 +1,6 @@
 package com.gumplee.biu.forest.extractor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.annotation.Resource;
 
@@ -14,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gumplee.biu.forest.common.JsonOut;
 import com.gumplee.biu.forest.common.StreamCommon;
 import com.gumplee.biu.forest.common.StreamContext;
-import com.gumplee.biu.forest.vo.StreamJSONResponseVO;
 import com.gumplee.biu.forest.vo.StreamReqeustVO;
 
 
@@ -89,7 +86,7 @@ public class QQ extends BaseExtractor
 			context.put(StreamContext.VideoInfo.EXT,ext);
 			context.put(StreamContext.VideoInfo.TITLE, title);
 			
-			getStreamJsonInfo(srVo, context);//封装视频信息json串
+			getStreamJsonInfo(SITE_INFO,srVo, context);//封装视频信息json串
 			
 			if (srVo.isDownload())
 			{
@@ -111,15 +108,4 @@ public class QQ extends BaseExtractor
 		}
 		return true;
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean getStreamJsonInfo(StreamReqeustVO srVo,StreamContext context)
-	{
-		JsonOut jo = new JsonOut();
-		HashMap<String, StreamJSONResponseVO> result = jo.print_info_json(SITE_INFO,context);
-		context.put(StreamContext.VideoInfo.VIDEO_JSON_INFO, result);
-		return true;
-	}
-
 }
