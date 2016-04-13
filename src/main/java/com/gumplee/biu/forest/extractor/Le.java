@@ -3,7 +3,10 @@ package com.gumplee.biu.forest.extractor;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -24,6 +27,7 @@ public class Le extends BaseExtractor{
 	
 	private static Logger logger = LoggerFactory.getLogger(Le.class);
 	public static final String SITE_INFO = "Le.com";
+	private static final String signKey = "2f9d6924b33a165a6d8b5d3d42f4f987";
 	@Resource(name="streamCommon")
 	StreamCommon common;
 	
@@ -148,9 +152,63 @@ public class Le extends BaseExtractor{
 		}
 	}
 	
-	public void downloadLetvCloudByVu(String vu,String uu,String title,StreamReqeustVO srVo,StreamContext context)
+	public void downloadLetvCloudByVu(final String vu,final String uu,String title,StreamReqeustVO srVo,StreamContext context)
 	{
+		HashMap<String, String> argument = new HashMap<String,String>(){
+			private static final long serialVersionUID = 8553213322235510938L;
+			{
+				put("cf", "flash");
+				put("format", "json");
+				put("rn", String.valueOf(System.currentTimeMillis() / 1000));
+				put("uu", uu);
+				put("ver", "2.2");
+				put("vu", vu);
+			}
+		};
+		List<String> listTmp = new ArrayList<>();
+		Iterator<String> iterator = argument.keySet().iterator();
+		while(iterator.hasNext())
+		{
+			listTmp.add(iterator.next());
+		}
+		Collections.sort(listTmp);
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < listTmp.size(); i++) {
+			sb = sb.append(listTmp.get(i)).append(argument.get(listTmp.get(i)));
+		}
+		sb = sb.append(signKey);
+		String md5Str = common.makeMd5Key(sb.toString());
+		StringBuffer sb2 = new StringBuffer();
+		for (int i = 0; i < listTmp.size(); i++) {
+			sb2 = sb2.append(listTmp.get(i)).append("=").append(argument.get(listTmp.get(i)));
+		}
+		String str2HashWithoutSign = sb2.toString();
+		String url = "http://api.letvcloud.com/gpc.php?&" + str2HashWithoutSign + "&sign=" + md5Str;
+		String html = common.getHtml(url, srVo, false);
+		JSONObject root = JSONObject.parseObject(html);
+		JSONObject infodata = root.getJSONObject("data");
 		
+        if(! infodata.containsKey("video_info"))return;
+       
+        JSONObject media = infodata.getJSONObject("video_info").getJSONObject("media");
+        Iterator<?> entrySet =media.entrySet().iterator(); 
+        HashMap<String,JSONObject> returnInfo = new HashMap< String, JSONObject>();
+        while(entrySet.hasNext() )
+        {
+        	String type=  entrySet.next().toString();
+        	String[] typesplit = type.split("=");
+        	String videoType = typesplit[0];
+        	JSONObject content = new JSONObject();
+        	JSONObject theCommon =media.getJSONObject(videoType).getJSONObject("play_url");
+        	int videoQuality = theCommon.getIntValue("vtype");
+        	String videoUrl =theCommon.getString("main_url");
+        	String definition = theCommon.getString("definition");
+        	content.put("vtype", videoQuality);
+        	content.put("mainUrl",videoUrl);
+        	content.put("definition",definition);
+        	returnInfo.put(videoType, content);
+        }
+	
 	}
 
 	@SuppressWarnings("unchecked")
